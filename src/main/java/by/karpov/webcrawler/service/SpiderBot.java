@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Karpov Valery
  * @param <T> the type of entity
  */
 public interface SpiderBot<T> {

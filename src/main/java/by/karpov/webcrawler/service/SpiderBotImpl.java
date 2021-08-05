@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 
 /**
- * @author Karpov Valery
  * This class using the Jsoup library collects data at the specified URL.
  */
 

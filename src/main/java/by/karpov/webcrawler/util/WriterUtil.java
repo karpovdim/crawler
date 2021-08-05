@@ -7,9 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-/**
- * @author Karpov Valery
- */
+
 public class WriterUtil {
     /**
      * Saves the result of the program to a file
