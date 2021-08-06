@@ -4,22 +4,21 @@ import by.karpov.webcrawler.entity.Page;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
-@NoArgsConstructor
 
 /**
  * This class using the Jsoup library collects data at the specified URL.
  */
-
+@Component
 public class SpiderBotImpl implements SpiderBot<Page> {
 
     /**
@@ -31,16 +30,16 @@ public class SpiderBotImpl implements SpiderBot<Page> {
      */
     private static final String NOT_EMPTY_ROW = "^.+$";
 
-    private int maxAmountPages;
-    private String starUrl;
+//    private int maxAmountPages;
+//    private String starUrl;
 
     /**
      * @return returns a list of {@link Page} with a limited number of URL.
      * @throws IOException - if a Document could not be created.
      */
-    public List<Page> getPageList() throws IOException {
+    public List<Page> getPageList(String startUrl, int depth)  {
         List<Page> pageList = new ArrayList<>();
-        List<String> urlList = getURLList();
+        List<String> urlList = getURLList(startUrl, depth);
         for (String url : urlList) {
             List<String> lineList = getLineList(url);
             pageList.add(new Page.Builder().setUrl(url).setLines(lineList).build());
@@ -87,8 +86,9 @@ public class SpiderBotImpl implements SpiderBot<Page> {
      * @return returns a list of URL with a limited number of @see maxAmountPages.
      * @throws IOException - if a Document could not be created.
      */
-    private List<String> getURLList() throws IOException {
-        Document document = Jsoup.connect(starUrl)
+    @SneakyThrows
+    private List<String> getURLList(String startUrl, int depth)  {
+        Document document = Jsoup.connect(startUrl)
                 .userAgent("Chrome/81.0.4044.138")
                 .get();
         return document
@@ -97,16 +97,17 @@ public class SpiderBotImpl implements SpiderBot<Page> {
                 .map(c -> c.attr("href"))
                 .filter(c -> c.matches(URL_REG_EX))
                 .distinct()
-                .limit(this.maxAmountPages)
+                .limit(depth)
                 .collect(Collectors.toList());
     }
 
     /**
      * @param url this is parameter to get Document.
      * @return returns a list of data rows.
-     * @throws IOException - if a Document could not be created.
      */
-    private List<String> getLineList(String url) throws IOException {
+
+    @SneakyThrows
+    private List<String> getLineList(String url)  {
         Document document = Jsoup.connect(url)
                 .userAgent("Chrome/81.0.4044.138")
                 .get();

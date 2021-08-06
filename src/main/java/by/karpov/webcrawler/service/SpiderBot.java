@@ -1,6 +1,5 @@
 package by.karpov.webcrawler.service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +8,7 @@ import java.util.Map;
  */
 public interface SpiderBot<T> {
 
-    List<T> getPageList() throws IOException;
+    List<T> getPageList(String startUrl, int depth) ;
 
     Map<String, String> getShortInfo(T entity, List<String> stringList);
 
