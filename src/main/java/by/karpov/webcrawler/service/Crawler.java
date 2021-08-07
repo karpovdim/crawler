@@ -3,6 +3,7 @@ package by.karpov.webcrawler.service;
 import by.karpov.webcrawler.entity.Page;
 import by.karpov.webcrawler.util.Writer;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Connection;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

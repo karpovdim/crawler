@@ -3,6 +3,7 @@ package by.karpov.webcrawler.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Locale;
 import java.util.Scanner;
 
 @Component
@@ -12,7 +13,7 @@ public class FilenameService {
     public  String getFilename(){
         String fileName = "";
         while (fileName.isBlank()) {
-            fileName = scanner.nextLine();
+            fileName = scanner.nextLine().toLowerCase();
             System.out.println("Insert file name to save: ");
 
         }

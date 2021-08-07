@@ -1,7 +1,6 @@
 package by.karpov.webcrawler.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ import java.util.Scanner;
 @Component
 @RequiredArgsConstructor
 public class KeywordService {
-  //  @Value("${YES}")
     private  String YES= "^[y|Y]$"; //name
     private final static String TEST = "test";
     private  final Scanner scanner;
@@ -21,7 +19,7 @@ public class KeywordService {
                 "\n or enter a 'test' to automatically fill a list of keywords.");
         String keyWord = "";
         while (!keyWord.matches(YES) && !keyWord.equals(TEST)) {
-            keyWord = scanner.nextLine();
+            keyWord = scanner.nextLine().toLowerCase();
             // automatically fill a list of keywords
             if (keyWord.equals(TEST)) {
                 keyWordList.add("Musk");
