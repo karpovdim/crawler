@@ -7,6 +7,7 @@ import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,8 @@ public class SpiderBotImpl implements SpiderBot<Page> {
      * @value - this is RegEx filters empty lines
      */
     private static final String NOT_EMPTY_ROW = "^.+$";
+    private String starUrl;
+    private int maxAmountPages;
 
 
     /**
@@ -36,8 +39,9 @@ public class SpiderBotImpl implements SpiderBot<Page> {
      */
     public List<Page> getPageList(String startUrl, int depth) {
         List<Page> pageList = new ArrayList<>();
+        ArrayList<String> listUrls = new ArrayList<String>();
         List<String> urlList = getURLList(startUrl, depth);
-        System.out.println(urlList.toString());
+        //  System.out.println(urlList.toString());
         for (String url : urlList) {
             List<String> lineList = getLineList(url);
             pageList.add(new Page.Builder().setUrl(url).setLines(lineList).build());
@@ -83,31 +87,54 @@ public class SpiderBotImpl implements SpiderBot<Page> {
      * @return returns a list of URL with a limited number of @see maxAmountPages.
      */
     @SneakyThrows
-    private List<String> getURLList(String startUrl,int depth)  {
-         Document document = this.document.getDocument(startUrl);
-        return document
-                .select("a")
-                .stream()
-                .map(c -> c.attr("href"))
-                .filter(c -> c.matches(URL_REG_EX))
-                //.filter(c->c.contains("en.wikipedia.org/wiki"))
-                .distinct()
-                .limit(depth)
-                .collect(Collectors.toList());
+    private List<String> getURLList(String startUrl, int depth) {
+        ArrayList<String> strings = new ArrayList<>();
+        return crawler(depth, startUrl, strings);
+//        return document
+//                .select("a")
+//                .stream()
+//                .map(c -> c.attr("href"))
+//                .filter(c -> c.matches(URL_REG_EX))
+//                .distinct()
+//                .limit(depth)
+//                .collect(Collectors.toList());
     }
 
     /**
      * @param url this is parameter to get Document.
      * @return returns a list of data rows.
      */
-
-    private List<String> getLineList(String url)  {
-
-     Document document = this.document.getDocument(url);
+    @SneakyThrows
+    private List<String> getLineList(String url) {
+        Document document = this.document.getDocument(url);
         return document.select("div")
                 .stream()
                 .map(Element::text)
                 .filter(c -> c.matches(NOT_EMPTY_ROW))
                 .collect(Collectors.toList());
+    }
+
+    @SneakyThrows
+    private List<String> crawler(int level, String url, List<String> v) {
+        Document document = this.document.getDocument(url);
+
+        for (Element link : document.select("a[href]")) {
+            while (level != 0 && v.size() < 50) {
+
+                String nextLink = link.absUrl("href");
+                if (!v.contains(nextLink)) {
+                    v.add(nextLink);
+                    System.out.println("next level" + level);
+                    System.out.println(url + "  " + v.size());
+                    crawler(--level, nextLink, v);
+
+                }
+                --level;
+
+
+            }
+        }
+
+        return v;
     }
 }

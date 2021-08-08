@@ -1,12 +1,10 @@
 package by.karpov.webcrawler.entity;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
-@Getter
 @Setter
 @NoArgsConstructor
 
@@ -24,6 +22,14 @@ public class Page {
      * Array of data rows.
      */
     private List<String> lines;
+
+    public String getUrl() {
+        return this.url;
+    }
+
+    public List<String> getLines() {
+        return this.lines;
+    }
 
     /**
      * Builder pattern implementation.

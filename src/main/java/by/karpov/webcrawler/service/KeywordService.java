@@ -22,9 +22,9 @@ public class KeywordService {
             keyWord = scanner.nextLine().toLowerCase();
             // automatically fill a list of keywords
             if (keyWord.equals(TEST)) {
-                keyWordList.add("Musk");
-                keyWordList.add("Elon");
-                keyWordList.add("Tesla");
+                keyWordList.add("кино");
+                keyWordList.add("лето");
+                keyWordList.add("август");
                 keyWordList.add("end");
                 keyWordList.add("home");
             }
