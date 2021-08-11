@@ -23,9 +23,9 @@ public class KeywordService {
         while (!keyWord.equals(yes) && !keyWord.equals(test)) {
             keyWord = scanner.nextLine().toLowerCase();
             if (keyWord.equals(test)) {
-                keyWordList.add("кино");
-                keyWordList.add("лето");
-                keyWordList.add("август");
+                keyWordList.add("Tesla");
+                keyWordList.add("Musk");
+                keyWordList.add("Gigafactory");
                 keyWordList.add("end");
                 keyWordList.add("home");
             }
