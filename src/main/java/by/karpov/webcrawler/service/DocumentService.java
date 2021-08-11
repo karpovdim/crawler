@@ -3,28 +3,27 @@ package by.karpov.webcrawler.service;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
+import org.jsoup.UnsupportedMimeTypeException;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
 public class DocumentService {
 
-    public Document getDocument(String url) throws IOException {
-      //  try {
+    public Document getDocument(String url) {
+        try {
             Connection connection = Jsoup.connect(url);
-            Document document = connection
+            return connection
                     .userAgent("Chrome/81.0.4044.138")
                     .get();
-     //       if (200 != connection.response().statusCode()) break;
-                return document;
-//            }
-//            return null;
-//        } catch (IOException ioException) {
-//            return null;
-//        }
+        } catch (UnsupportedMimeTypeException exception) {
+            return null;
+        } catch (IOException exception) {
+            System.out.println("bad connection");
+            return null;
+        }
     }
 }

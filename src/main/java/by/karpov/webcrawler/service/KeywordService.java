@@ -1,27 +1,28 @@
 package by.karpov.webcrawler.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
 @Component
 @RequiredArgsConstructor
 public class KeywordService {
-    private  String YES= "^[y|Y]$"; //name
-    private final static String TEST = "test";
-    private  final Scanner scanner;
+    private final Scanner scanner;
 
-    public List<String> getKeyWordList(){
+    public List<String> getKeyWordList() {
         List<String> keyWordList = new ArrayList<>();
         System.out.println("Insert keyword (for example 'Афиша', 'июнь', 'выборы', 'лето', 'вода')," +
                 "\n or enter a 'test' to automatically fill a list of keywords.");
         String keyWord = "";
-        while (!keyWord.matches(YES) && !keyWord.equals(TEST)) {
+        String yes = "y";
+        String test = "test";
+        while (!keyWord.equals(yes) && !keyWord.equals(test)) {
             keyWord = scanner.nextLine().toLowerCase();
-            // automatically fill a list of keywords
-            if (keyWord.equals(TEST)) {
+            if (keyWord.equals(test)) {
                 keyWordList.add("кино");
                 keyWordList.add("лето");
                 keyWordList.add("август");
@@ -29,15 +30,13 @@ public class KeywordService {
                 keyWordList.add("home");
             }
             // fill a list of keywords
-            if (!keyWord.matches(YES) & !keyWord.equals(TEST)) {
+            if (!keyWord.matches(yes) & !keyWord.equals(test)) {
                 if (!keyWord.equals("")) {
                     keyWordList.add(keyWord);
                 }
                 System.out.println("Insert key word or 'Y' to continue.");
             }
-
         }
-return keyWordList;
+        return keyWordList;
     }
-
 }
